@@ -13,13 +13,12 @@ const server = http.createServer(app);
 //initialize the WebSocket server instance
 const wss = new WebSocket.Server({ server });
 
-
 wss.on("connection", ws => {
   ws.on("message", msg => {
     const msgReceive = msg.toString()
     try {
         const json = JSON.parse(msgReceive)
-        parseMessage(json, ws)  
+        parseMessage(json, ws, knex)  
     } catch (error) {
         console.log(error)
     }

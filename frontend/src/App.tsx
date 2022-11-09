@@ -33,9 +33,13 @@ function App() {
     };
   }, []);
 
+  const stringy = json => {
+    return JSON.stringify(json)
+  }
+
   return (
     <div className="App">
-      <button onClick={() => ws.send('{"type": "message", "data": {"message": "oi"}}')}>
+      <button onClick={() => ws.send(stringy({"type": "userRegister", "data": {"email": "xande1231221@hotmail.com", "password": "xande123", "username": 'kaway404'}}))}>
         Clicar
       </button>
     </div>

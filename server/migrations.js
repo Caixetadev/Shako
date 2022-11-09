@@ -28,4 +28,4 @@ const up = function (knex) {
 //Migrations
 up(knex);
 
-module.exports = {knex, up}
+module.exports = {knex}
