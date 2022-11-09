@@ -33,15 +33,27 @@ function App() {
     };
   }, []);
 
-  const stringy = json => {
+  const stringy = (json: object) => {
     return JSON.stringify(json)
   }
 
   return (
     <div className="App">
-      <button onClick={() => ws.send(stringy({"type": "userLogin", "data": {"email": "xande1231221@hotmail.com", "password": "xande123", "username": 'kaway404'}}))}>
-        Clicar
-      </button>
+      <div className="login-container">
+        <div className="login-box">
+          <div className="login-box-content">
+            <h1 className="title">Welcome back!</h1>
+            <h4 className="subtitle">We're so excited to see you again!</h4>
+            <label htmlFor="email">Email</label>
+            <input type="text" id="email" autoComplete="off"/>
+            <label htmlFor="password">Password</label>
+            <input type="password" id="password"/>
+            <p><a className="register" href="#">Forgot your password?</a></p>
+            <button>Login</button>
+            <p>Need an account? <a className="register" href="#">Register</a></p>
+          </div>
+        </div>
+    </div>
     </div>
   )
 }
