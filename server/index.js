@@ -4,7 +4,7 @@ const http = require("http");
 const { v4: uuidv4 } = require('uuid');
 const app = express();
 const {parseMessage} = require('./webrtc/parse');
-
+const {knex} = require('./migrations');
 const port = process.env.PORT || 9000;
 
 //initialize a http server
