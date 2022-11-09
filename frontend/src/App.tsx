@@ -39,7 +39,7 @@ function App() {
 
   return (
     <div className="App">
-      <button onClick={() => ws.send(stringy({"type": "userRegister", "data": {"email": "xande1231221@hotmail.com", "password": "xande123", "username": 'kaway404'}}))}>
+      <button onClick={() => ws.send(stringy({"type": "userLogin", "data": {"email": "xande1231221@hotmail.com", "password": "xande123", "username": 'kaway404'}}))}>
         Clicar
       </button>
     </div>

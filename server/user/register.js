@@ -5,7 +5,19 @@ const discriminationParse = number => {
     return ans
 }
 
-const userRegister = async ({email, password, username}, knex) => {
+const generateToken = (length) => {
+    //edit the token allowed characters
+    var a = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".split("");
+    var b = [];  
+    for (var i=0; i<length; i++) {
+        var j = (Math.random() * (a.length-1)).toFixed(0);
+        b[i] = a[j];
+    }
+    return b.join("");
+}
+
+const userRegister = async ({email, password, username}, knex, ws) => {
+    const token = generateToken(199)
     let discrimi = await knex('users')
     .select('*')
     .forUpdate()
@@ -24,10 +36,10 @@ const userRegister = async ({email, password, username}, knex) => {
                 email: email, 
                 password: password,
                 username: username,
-                token: '000',
-                admin: '0',
-                avatar: '00',
-                bg: '000',
+                token: token,
+                admin: '',
+                avatar: '',
+                bg: '',
                 discrimination: discrimi
             }).then(()=>{}) //working
         }
