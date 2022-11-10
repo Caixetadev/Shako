@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 
+const typePage = 'login'
 
 function Login(props: any) {
     const [email, setEmail] = useState('');
@@ -10,7 +11,7 @@ function Login(props: any) {
         props.ws.onmessage = (evt: any) => {
         // listen to data sent from the websocket server
           const message = JSON.parse(evt.data)
-          if(message.type === "login"){
+          if(message.type === typePage){
             setError(!message.sucess)
             if(message.user?.id){
               window.localStorage.setItem('token', message.user.token)
