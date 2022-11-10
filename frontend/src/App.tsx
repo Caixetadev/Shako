@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react'
 import './App.css'
 import Login from './pages/auth/login'
 
-let ws = () => {}
-
 interface User {
   id: string;
   username: string;
@@ -14,6 +12,8 @@ interface User {
   bg: string;
   admin: string;
 }
+
+const ws = new WebSocket('ws://localhost:9000/ws')
 
 function App() {
   const [user, setUser] = useState<User>({
@@ -26,7 +26,6 @@ function App() {
     bg: '',
     admin: '',
   });
-  var ws = new WebSocket('ws://localhost:9000/ws')
 
   let intervalConnect = setInterval(function() {
     clearInterval(intervalConnect)
