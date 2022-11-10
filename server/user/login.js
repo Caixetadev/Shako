@@ -10,7 +10,8 @@ const userLogin = async ({email, password}, knex, ws) => {
                 JSON.stringify({
                   type: "login",
                   user: rows[0],
-                  sucess: true
+                  sucess: true,
+                  noMessageError: false
                 })
             );
         } else{
@@ -18,7 +19,8 @@ const userLogin = async ({email, password}, knex, ws) => {
                 JSON.stringify({
                   type: "login",
                   user: {},
-                  sucess: false
+                  sucess: false,
+                  noMessageError: false
                 })
             );
         }

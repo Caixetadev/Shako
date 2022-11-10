@@ -8,7 +8,8 @@ const validationToken = async ({token}, knex, ws) => {
                 JSON.stringify({
                   type: "login",
                   user: rows[0],
-                  sucess: true
+                  sucess: true,
+                  noMessageError: true
                 })
             );
         } else{
@@ -16,7 +17,8 @@ const validationToken = async ({token}, knex, ws) => {
                 JSON.stringify({
                   type: "login",
                   user: {},
-                  sucess: false
+                  sucess: false,
+                  noMessageError: true
                 })
             );
         }
