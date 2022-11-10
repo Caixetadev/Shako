@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
 
+
 function Login(props: any) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(true);
-    const [user, setUser] = useState({});
     
     useEffect(() => {
         props.ws.onmessage = (evt: any) => {
@@ -13,7 +13,6 @@ function Login(props: any) {
           setError(message.sucess)
           if(message.user?.id){
             window.localStorage.setItem('token', message.user.token)
-            setUser(message.user)
             props.setLogged(message.user)
           }
         }

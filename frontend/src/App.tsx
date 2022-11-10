@@ -4,8 +4,28 @@ import Login from './pages/auth/login'
 
 let ws = () => {}
 
+interface User {
+  id: string;
+  username: string;
+  token: string;
+  email: string;
+  discrimination: string;
+  avatar: string;
+  bg: string;
+  admin: string;
+}
+
 function App() {
-  const [user, setUser] = useState({id: null});
+  const [user, setUser] = useState<User>({
+    id: '',
+    username: '',
+    token: '',
+    email: '',
+    discrimination: '',
+    avatar: '',
+    bg: '',
+    admin: '',
+  });
   var ws = new WebSocket('ws://localhost:9000/ws')
 
   let intervalConnect = setInterval(function() {
@@ -51,6 +71,7 @@ function App() {
       <>
         {/* Logged */}
         <h1>Logged page</h1>
+        <h1>Hello {user?.username} </h1>
       </>
       }
     </div>
