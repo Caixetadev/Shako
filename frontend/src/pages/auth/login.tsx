@@ -6,6 +6,8 @@ import {
 
 const typePage = 'login'
 
+const ws = new WebSocket('ws://localhost:9000/ws/login')
+
 function Login(props: any) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -13,7 +15,7 @@ function Login(props: any) {
     const [message, setMessage] = useState('');
     
     useEffect(() => {
-        props.ws.onmessage = (evt: any) => {
+        ws.onmessage = (evt: any) => {
         // listen to data sent from the websocket server
           const message = JSON.parse(evt.data)
           if(message.type === typePage){
@@ -24,22 +26,13 @@ function Login(props: any) {
             if(message.user?.id){
               window.localStorage.setItem('token', message.user.token)
               props.setLogged(message.user)
-            }
+            } 
+          } else if(message.type == 'validateToken'){
+            //Validate token and logged if sucess
+            const data = {type: 'validationToken', data: {token: window.localStorage.getItem('token')?window.localStorage.getItem('token'): 'undefined'}};
+            ws.send(stringy(data))
           }
         }
-  
-        props.ws.onclose = () => {
-          //Close ws
-        }
-  
-        props.ws.onerror = (err: any) => {
-          // console.error(
-          //     "Socket encountered error: ",
-          //     "Closing socket"
-          // );
-  
-          props.ws.close();
-      };
     }, []);
   
     const stringy = (json: object) => {
@@ -54,7 +47,7 @@ function Login(props: any) {
             onSubmit={(e: any) => {
               e.preventDefault();
               const data = {type: 'userLogin', data: {email, password}};
-              props.ws.send(stringy(data))
+              ws.send(stringy(data))
             }}
             >
               <div className="login-box-content">

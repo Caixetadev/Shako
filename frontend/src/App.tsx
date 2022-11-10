@@ -20,8 +20,6 @@ interface User {
   admin: string;
 }
 
-const ws = new WebSocket('ws://localhost:9000/ws')
-
 function App() {
   const [user, setUser] = useState<User>({
     id: '',
@@ -41,30 +39,6 @@ function App() {
   const stringy = (json: object) => {
     return JSON.stringify(json)
   }
-  
-  useEffect(() => {
-      const connect = () => {
-        ws.onopen = () => {
-          clearInterval(intervalConnect)
-          setTimeout(() => {
-            const data = {type: 'validationToken', data: {token: window.localStorage.getItem('token')?window.localStorage.getItem('token'): 'undefined'}};
-            ws.send(stringy(data))
-          }, 1000)
-        }
-  
-        ws.onclose = () => {
-          //Close ws
-        }
-  
-        ws.onerror = err => {
-          console.error(
-              "Socket encountered error: ",
-              "Closing socket"
-          );
-      };
-      }
-      connect()
-  }, []);
 
   const setLogged = (user: Object) => {
     setUser(user as any)
@@ -76,22 +50,22 @@ function App() {
         <Route path="/" exact render={(props) => <>
           { user?.id ? <>
             <h1>Logged with { user?.username}#{user?.discrimination}</h1>
-          </> : <Login ws={ws} setLogged={setLogged} /> }
+          </> : <Login setLogged={setLogged} /> }
         </>} />
         <Route path="/login" exact render={(props) => <>
           { user?.id ? <>
             <h1>Logged with { user?.username}#{user?.discrimination}</h1>
-          </> : <Login ws={ws} setLogged={setLogged} /> }
+          </> : <Login setLogged={setLogged} /> }
         </>} />
         <Route path="/app" exact render={(props) => <>
           { user?.id ? <>
             <h1>Logged with { user?.username}#{user?.discrimination}</h1>
-          </> : <Login ws={ws} setLogged={setLogged} /> }
+          </> : <Login setLogged={setLogged} /> }
         </>} />
         <Route path="/register" exact render={(props) => <>
           { user?.id ? <>
             <h1>Logged with { user?.username}#{user?.discrimination}</h1>
-          </> : <Register ws={ws}/> }
+          </> : <Register/> }
         </>} />
       </BrowserRouter>
     </div>

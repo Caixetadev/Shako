@@ -6,6 +6,8 @@ import {
 
 const typePage = 'register'
 
+const ws = new WebSocket('ws://localhost:9000/ws/register')
+
 function Register(props: any) {
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
@@ -14,7 +16,7 @@ function Register(props: any) {
     const [message, setMessage] = useState('');
     
     useEffect(() => {
-        props.ws.onmessage = (evt: any) => {
+        ws.onmessage = (evt: any) => {
         // listen to data sent from the websocket server
           const message = JSON.parse(evt.data)
           if(message.type === typePage){
@@ -27,19 +29,6 @@ function Register(props: any) {
             }
           }
         }
-  
-        props.ws.onclose = () => {
-          //Close ws
-        }
-  
-        props.ws.onerror = (err: any) => {
-          // console.error(
-          //     "Socket encountered error: ",
-          //     "Closing socket"
-          // );
-  
-          props.ws.close();
-      };
     }, []);
   
     const stringy = (json: object) => {
@@ -54,7 +43,7 @@ function Register(props: any) {
             onSubmit={(e: any) => {
               e.preventDefault();
               const data = {type: 'userRegister', data: {email, password, username}};
-              props.ws.send(stringy(data))
+              ws.send(stringy(data))
             }}
             >
               <div className="login-box-content">

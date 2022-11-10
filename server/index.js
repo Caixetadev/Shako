@@ -23,6 +23,12 @@ wss.on("connection", ws => {
         console.log(error)
     }
   });
+  //When connect send again to validate token
+  ws.send(
+    JSON.stringify({
+      type: "validateToken"
+    })
+);
 });
 
 //start our server
