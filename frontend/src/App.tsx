@@ -65,7 +65,7 @@ function App() {
         <Route path="/register" exact render={(props) => <>
           { user?.id ? <>
             <h1>Logged with { user?.username}#{user?.discrimination}</h1>
-          </> : <Register/> }
+          </> : <Register setLogged={setLogged}/> }
         </>} />
       </BrowserRouter>
     </div>

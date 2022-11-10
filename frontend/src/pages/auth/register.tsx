@@ -19,7 +19,16 @@ function Register(props: any) {
         ws.onmessage = (evt: any) => {
         // listen to data sent from the websocket server
           const message = JSON.parse(evt.data)
-          if(message.type === typePage){
+          if(message.type === 'login'){
+            if(!message?.noMessageError){
+              setError(!message.sucess)
+              setMessage(message.message)
+            }
+            if(message.user?.id){
+              window.localStorage.setItem('token', message.user.token)
+              props.setLogged(message.user)
+            } 
+          } else if(message.type === typePage){
             setError(!message.sucess)
             setMessage(message.message)
             if(message?.sucess){
@@ -27,6 +36,10 @@ function Register(props: any) {
                 window.location.pathname = message?.redirectUrl
               }
             }
+          } else if(message.type == 'validateToken'){
+            //Validate token and logged if sucess
+            const data = {type: 'validationToken', data: {token: window.localStorage.getItem('token')?window.localStorage.getItem('token'): 'undefined'}};
+            ws.send(stringy(data))
           }
         }
     }, []);
