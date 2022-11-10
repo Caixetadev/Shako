@@ -16,7 +16,9 @@ function Login(props: any) {
         // listen to data sent from the websocket server
           const message = JSON.parse(evt.data)
           if(message.type === typePage){
-            setError(!message.sucess)
+            if(!message?.noMessageError){
+              setError(!message.sucess)
+            }
             if(message.user?.id){
               window.localStorage.setItem('token', message.user.token)
               props.setLogged(message.user)

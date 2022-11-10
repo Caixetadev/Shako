@@ -46,8 +46,10 @@ function App() {
       const connect = () => {
         ws.onopen = () => {
           clearInterval(intervalConnect)
-          const data = {type: 'validationToken', data: {token: window.localStorage.getItem('token')?window.localStorage.getItem('token'): 'undefined'}};
-          ws.send(stringy(data))
+          setTimeout(() => {
+            const data = {type: 'validationToken', data: {token: window.localStorage.getItem('token')?window.localStorage.getItem('token'): 'undefined'}};
+            ws.send(stringy(data))
+          }, 1000)
         }
   
         ws.onclose = () => {
@@ -74,17 +76,22 @@ function App() {
         <Route path="/" exact render={(props) => <>
           { user?.id ? <>
             <h1>Logged with { user?.username}#{user?.discrimination}</h1>
-          </> : <Login ws={ws} setLogged={setLogged} Link /> }
+          </> : <Login ws={ws} setLogged={setLogged} /> }
         </>} />
         <Route path="/login" exact render={(props) => <>
           { user?.id ? <>
             <h1>Logged with { user?.username}#{user?.discrimination}</h1>
-          </> : <Login ws={ws} setLogged={setLogged} Link /> }
+          </> : <Login ws={ws} setLogged={setLogged} /> }
+        </>} />
+        <Route path="/app" exact render={(props) => <>
+          { user?.id ? <>
+            <h1>Logged with { user?.username}#{user?.discrimination}</h1>
+          </> : <Login ws={ws} setLogged={setLogged} /> }
         </>} />
         <Route path="/register" exact render={(props) => <>
           { user?.id ? <>
             <h1>Logged with { user?.username}#{user?.discrimination}</h1>
-          </> : <Register ws={ws} Link/> }
+          </> : <Register ws={ws}/> }
         </>} />
       </BrowserRouter>
     </div>
