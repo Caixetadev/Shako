@@ -14,8 +14,6 @@ function App() {
       const connect = () => {
         ws = new WebSocket('ws://localhost:9000/ws')
         ws.onopen = () => {
-          // on connecting, do nothing but log it to the console
-          console.log('connected')
           clearInterval(intervalConnect)
         }
   
@@ -23,8 +21,6 @@ function App() {
           console.log('disconnected')
           clearInterval(intervalConnect)
           intervalConnect = setInterval(function() {
-            //Try
-            console.log('Try connect again in 1 second')
             connect();
           }, 1000);
         }
@@ -34,7 +30,6 @@ function App() {
               "Socket encountered error: ",
               "Closing socket"
           );
-  
           ws.close();
       };
       }
