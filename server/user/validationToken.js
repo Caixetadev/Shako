@@ -6,7 +6,7 @@ const validationToken = async ({token}, knex, ws) => {
             rows[0].password = undefined
             ws.send(
                 JSON.stringify({
-                  type: "login_sucess",
+                  type: "login",
                   user: rows[0],
                   sucess: true
                 })
@@ -14,7 +14,7 @@ const validationToken = async ({token}, knex, ws) => {
         } else{
             ws.send(
                 JSON.stringify({
-                  type: "login_failed",
+                  type: "login",
                   user: {},
                   sucess: false
                 })

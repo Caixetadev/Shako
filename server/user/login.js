@@ -1,5 +1,6 @@
 const userLogin = async ({email, password}, knex, ws) => {
-    knex('users').where({
+    if(email && password){
+      knex('users').where({
         email: email,
         password:  password
       }).select('*').then(function(rows) {
@@ -22,6 +23,7 @@ const userLogin = async ({email, password}, knex, ws) => {
             );
         }
       })
+    }
 }
 
 module.exports = {userLogin}

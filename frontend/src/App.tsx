@@ -1,6 +1,13 @@
 import { useState, useEffect } from 'react'
 import './App.css'
+import {
+  BrowserRouter,
+  Route,
+  Link
+} from "react-router-dom"
+
 import Login from './pages/auth/login'
+import Register from './pages/auth/register'
 
 interface User {
   id: string;
@@ -63,13 +70,23 @@ function App() {
 
   return (
     <div className="App">
-      {!user?.id ? <Login ws={ws} setLogged={setLogged}/> :
-      <>
-        {/* Logged */}
-        <h1>Logged page</h1>
-        <h1>Hello {user?.username} </h1>
-      </>
-      }
+      <BrowserRouter>
+        <Route path="/" exact render={(props) => <>
+          { user?.id ? <>
+            <h1>Logged with { user?.username}#{user?.discrimination}</h1>
+          </> : <Login ws={ws} setLogged={setLogged} Link /> }
+        </>} />
+        <Route path="/login" exact render={(props) => <>
+          { user?.id ? <>
+            <h1>Logged with { user?.username}#{user?.discrimination}</h1>
+          </> : <Login ws={ws} setLogged={setLogged} Link /> }
+        </>} />
+        <Route path="/register" exact render={(props) => <>
+          { user?.id ? <>
+            <h1>Logged with { user?.username}#{user?.discrimination}</h1>
+          </> : <Register ws={ws} Link/> }
+        </>} />
+      </BrowserRouter>
     </div>
   )
 }

@@ -23,6 +23,7 @@ body {
   background-color: #2c2f33;
   border-radius: 5px;
   box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  animation: bounce 0.4s;
 }
 
 .title, label, p {
@@ -45,6 +46,15 @@ label, p {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+@keyframes bounce{
+  0%{
+    transform: translateY(-50px);
+  }
+  100%{
+    transform: translateY(0px);
+  }
 }
 
 #email, #password {

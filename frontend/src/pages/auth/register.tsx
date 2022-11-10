@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react'
-
 import {
-  Link
+  Link,
+  Redirect
 } from "react-router-dom"
 
-const typePage = 'login'
+const typePage = 'register'
 
-function Login(props: any) {
+function Register(props: any) {
     const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(false);
     
@@ -17,9 +18,10 @@ function Login(props: any) {
           const message = JSON.parse(evt.data)
           if(message.type === typePage){
             setError(!message.sucess)
-            if(message.user?.id){
-              window.localStorage.setItem('token', message.user.token)
-              props.setLogged(message.user)
+            if(message?.sucess){
+              if(message?.redirect){
+                window.location.pathname = message?.redirectUrl
+              }
             }
           }
         }
@@ -49,16 +51,19 @@ function Login(props: any) {
             <form
             onSubmit={(e: any) => {
               e.preventDefault();
-              const data = {type: 'userLogin', data: {email, password}};
+              const data = {type: 'userRegister', data: {email, password, username}};
               props.ws.send(stringy(data))
             }}
             >
               <div className="login-box-content">
-                <h1 className="title">Welcome back!</h1>
-                <h4 className="subtitle">We're so excited to see you again!</h4>
+                <h1 className="title">Create a account</h1>
                 <label htmlFor="email">E-mail</label>
                 <input 
                 onKeyUp={(e) => setEmail((e.target as any).value)}
+                type="text" id="email" autoComplete="off"/>
+                <label htmlFor="email">Username</label>
+                <input 
+                onKeyUp={(e) => setUsername((e.target as any).value)}
                 type="text" id="email" autoComplete="off"/>
                 <label htmlFor="password">Password</label>
                 <input 
@@ -66,10 +71,11 @@ function Login(props: any) {
                 type="password" id="password"/>
                 <span className='error'>{ error && "E-mail or password incorrects" }</span>
                 <p><a className="register" href="#">Forgot your password?</a></p>
-                <button>Login</button>
-                <p>Need an account? <Link 
-                  to={'/register'}
-                  className="register">Register</Link></p>
+                <button>Register</button>
+                <p>Have a account? <Link 
+                  to={'/login'}
+                  className="register">Login</Link>
+                </p>
               </div>
             </form>
           </div>
@@ -78,4 +84,4 @@ function Login(props: any) {
     )
 }
 
-export default Login
+export default Register

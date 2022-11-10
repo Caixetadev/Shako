@@ -17,57 +17,59 @@ const generateToken = (length) => {
 }
 
 const userRegister = async ({email, password, username}, knex, ws) => {
-    const token = generateToken(199)
-    let discrimi = await knex('users')
-    .select('*')
-    .forUpdate()
-    .noWait()
+    if(email && password && username){
+        const token = generateToken(199)
+        let discrimi = await knex('users')
+        .select('*')
+        .forUpdate()
+        .noWait()
 
-    //Discrimination parse
-    discrimi = discriminationParse(discrimi.length + 1)
+        //Discrimination parse
+        discrimi = discriminationParse(discrimi.length + 1)
 
-    knex('users')
-    .select()
-    .where('email', email)
-    .then(function(rows) {
-        if (rows.length === 0) {
-            // no matching records found
-            knex('users').insert(
-            {
-                email: email, 
-                password: password,
-                username: username,
-                token: token,
-                admin: '',
-                avatar: '',
-                bg: '',
-                discrimination: discrimi
-            }).then(()=>{
+        knex('users')
+        .select()
+        .where('email', email)
+        .then(function(rows) {
+            if (rows.length === 0) {
+                // no matching records found
+                knex('users').insert(
+                {
+                    email: email, 
+                    password: password,
+                    username: username,
+                    token: token,
+                    admin: '0',
+                    avatar: '',
+                    bg: '',
+                    discrimination: discrimi
+                }).then(()=>{
+                    ws.send(
+                        JSON.stringify({
+                            type: "register",
+                            redirectUrl: "/login",
+                            sucess: true,
+                            redirect: true,
+                            message: "Register sucessfuly."
+                        })
+                    )
+                })
+            } else{
                 ws.send(
                     JSON.stringify({
                         type: "register",
-                        redirectUrl: "/login",
-                        sucess: true,
-                        redirect: true,
-                        message: "Register sucessfuly."
+                        redirectUrl: "/register",
+                        sucess: false,
+                        redirect: false,
+                        message: "E-mail already exist. Try again with other e-mail."
                     })
                 )
-            })
-        } else{
-            ws.send(
-                JSON.stringify({
-                    type: "register",
-                    redirectUrl: "/register",
-                    sucess: false,
-                    redirect: false,
-                    message: "E-mail already exist. Try again with other e-mail."
-                })
-            )
-        }
-    })
-    .catch(function(ex) {
-        
-    })
+            }
+        })
+        .catch(function(ex) {
+            
+        })
+    }
 }
 
 module.exports = {userRegister}
