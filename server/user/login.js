@@ -11,7 +11,8 @@ const userLogin = async ({email, password}, knex, ws) => {
                   type: "login",
                   user: rows[0],
                   sucess: true,
-                  noMessageError: false
+                  noMessageError: false,
+                  message: "Logged with sucess."
                 })
             );
         } else{
@@ -20,10 +21,19 @@ const userLogin = async ({email, password}, knex, ws) => {
                   type: "login",
                   user: {},
                   sucess: false,
-                  noMessageError: false
+                  noMessageError: false,
+                  message: "E-mail or password incorrects."
                 })
             );
         }
+      })
+    } else{
+      JSON.stringify({
+        type: "login",
+        user: {},
+        sucess: false,
+        noMessageError: false,
+        message: "E-mail or password is not valid"
       })
     }
 }

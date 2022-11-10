@@ -69,7 +69,15 @@ const userRegister = async ({email, password, username}, knex, ws) => {
         .catch(function(ex) {
             
         })
-    }
+    } else{
+        JSON.stringify({
+          type: "register",
+          redirectUrl: "/register",
+          sucess: false,
+          redirect: false,
+          message: "E-mail or password is not valid"
+        })
+      }
 }
 
 module.exports = {userRegister}

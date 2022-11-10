@@ -9,7 +9,8 @@ const validationToken = async ({token}, knex, ws) => {
                   type: "login",
                   user: rows[0],
                   sucess: true,
-                  noMessageError: true
+                  noMessageError: true,
+                  message: ""
                 })
             );
         } else{
@@ -18,7 +19,8 @@ const validationToken = async ({token}, knex, ws) => {
                   type: "login",
                   user: {},
                   sucess: false,
-                  noMessageError: true
+                  noMessageError: true,
+                  message: ""
                 })
             );
         }

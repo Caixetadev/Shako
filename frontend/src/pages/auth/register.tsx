@@ -11,6 +11,7 @@ function Register(props: any) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(false);
+    const [message, setMessage] = useState('');
     
     useEffect(() => {
         props.ws.onmessage = (evt: any) => {
@@ -18,6 +19,7 @@ function Register(props: any) {
           const message = JSON.parse(evt.data)
           if(message.type === typePage){
             setError(!message.sucess)
+            setMessage(message.message)
             if(message?.sucess){
               if(message?.redirect){
                 window.location.pathname = message?.redirectUrl
@@ -69,7 +71,7 @@ function Register(props: any) {
                 <input 
                 onKeyUp={(e) => setPassword((e.target as any).value)}
                 type="password" id="password"/>
-                <span className='error'>{ error && "E-mail or password incorrects" }</span>
+                <span className='error'>{ error && message }</span>
                 <p><a className="register" href="#">Forgot your password?</a></p>
                 <button>Register</button>
                 <p>Have a account? <Link 

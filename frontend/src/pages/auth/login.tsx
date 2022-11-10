@@ -10,6 +10,7 @@ function Login(props: any) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(false);
+    const [message, setMessage] = useState('');
     
     useEffect(() => {
         props.ws.onmessage = (evt: any) => {
@@ -18,6 +19,7 @@ function Login(props: any) {
           if(message.type === typePage){
             if(!message?.noMessageError){
               setError(!message.sucess)
+              setMessage(message.message)
             }
             if(message.user?.id){
               window.localStorage.setItem('token', message.user.token)
@@ -66,7 +68,7 @@ function Login(props: any) {
                 <input 
                 onKeyUp={(e) => setPassword((e.target as any).value)}
                 type="password" id="password"/>
-                <span className='error'>{ error && "E-mail or password incorrects" }</span>
+                <span className='error'>{ error && message }</span>
                 <p><a className="register" href="#">Forgot your password?</a></p>
                 <button>Login</button>
                 <p>Need an account? <Link 
