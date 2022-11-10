@@ -2,26 +2,32 @@ import { useState, useEffect } from 'react'
 import './App.css'
 import Login from './pages/auth/login'
 
-let ws = new WebSocket('ws://localhost:9000/ws')
+let ws = () => {}
 
 function App() {
   const [user, setUser] = useState({id: null});
+  var ws = new WebSocket('ws://localhost:9000/ws')
+
   let intervalConnect = setInterval(function() {
     clearInterval(intervalConnect)
   }, 1000);
+
+  const stringy = (json: object) => {
+    return JSON.stringify(json)
+  }
   
   useEffect(() => {
       const connect = () => {
-        ws = new WebSocket('ws://localhost:9000/ws')
         ws.onopen = () => {
           clearInterval(intervalConnect)
+          const data = {type: 'validationToken', data: {token: window.localStorage.getItem('token')?window.localStorage.getItem('token'): 'undefined'}};
+          ws.send(stringy(data))
         }
   
         ws.onclose = () => {
-          console.log('disconnected')
           clearInterval(intervalConnect)
           intervalConnect = setInterval(function() {
-            connect();
+            ws = new WebSocket('ws://localhost:9000/ws')
           }, 1000);
         }
   
@@ -30,7 +36,6 @@ function App() {
               "Socket encountered error: ",
               "Closing socket"
           );
-          ws.close();
       };
       }
       connect()

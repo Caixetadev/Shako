@@ -1,5 +1,6 @@
 const {userRegister} = require('../user/register');
 const {userLogin} = require('../user/login');
+const {validationToken} = require('../user/validationToken')
 
 const parseMessage = async ({type, data}, ws, knex) => {
     try {
@@ -11,7 +12,8 @@ const parseMessage = async ({type, data}, ws, knex) => {
 
 const types = {
     'userRegister': userRegister,
-    'userLogin': userLogin
+    'userLogin': userLogin,
+    'validationToken': validationToken
 }
 
 module.exports = {parseMessage}
