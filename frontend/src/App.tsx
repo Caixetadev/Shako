@@ -45,10 +45,7 @@ function App() {
         }
   
         ws.onclose = () => {
-          clearInterval(intervalConnect)
-          intervalConnect = setInterval(function() {
-            ws = new WebSocket('ws://localhost:9000/ws')
-          }, 1000);
+          //Close ws
         }
   
         ws.onerror = err => {
