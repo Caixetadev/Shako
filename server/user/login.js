@@ -7,7 +7,7 @@ const userLogin = async ({email, password}, knex, ws) => {
             rows[0].password = undefined
             ws.send(
                 JSON.stringify({
-                  type: "login_sucess",
+                  type: "login",
                   user: rows[0],
                   sucess: true
                 })
@@ -15,7 +15,7 @@ const userLogin = async ({email, password}, knex, ws) => {
         } else{
             ws.send(
                 JSON.stringify({
-                  type: "login_failed",
+                  type: "login",
                   user: {},
                   sucess: false
                 })

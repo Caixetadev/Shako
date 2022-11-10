@@ -23,6 +23,7 @@ const userRegister = async ({email, password, username}, knex, ws) => {
     .forUpdate()
     .noWait()
 
+    //Discrimination parse
     discrimi = discriminationParse(discrimi.length + 1)
 
     knex('users')
@@ -41,7 +42,27 @@ const userRegister = async ({email, password, username}, knex, ws) => {
                 avatar: '',
                 bg: '',
                 discrimination: discrimi
-            }).then(()=>{}) //working
+            }).then(()=>{
+                ws.send(
+                    JSON.stringify({
+                        type: "register",
+                        redirectUrl: "/login",
+                        sucess: true,
+                        redirect: true,
+                        message: "Register sucessfuly."
+                    })
+                )
+            })
+        } else{
+            ws.send(
+                JSON.stringify({
+                    type: "register",
+                    redirectUrl: "/register",
+                    sucess: false,
+                    redirect: false,
+                    message: "E-mail already exist. Try again with other e-mail."
+                })
+            )
         }
     })
     .catch(function(ex) {
