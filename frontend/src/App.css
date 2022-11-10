@@ -2,6 +2,10 @@
   font-family: 'Nunito', sans-serif;
 }
 
+:root{
+  --danger: #ff4e4e;
+}
+
 body {
   overflow: hidden;
 }
@@ -90,4 +94,12 @@ input[type=text], input[type=password] {
 
 a{
   color: white;
+}
+
+.error{
+  color: var(--danger);
+}
+
+.error input{
+  border: 2px solid var(--danger);
 }

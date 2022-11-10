@@ -8,14 +8,16 @@ const userLogin = async ({email, password}, knex, ws) => {
             ws.send(
                 JSON.stringify({
                   type: "login_sucess",
-                  user: rows[0]
+                  user: rows[0],
+                  sucess: true
                 })
             );
         } else{
             ws.send(
                 JSON.stringify({
                   type: "login_failed",
-                  user: {}
+                  user: {},
+                  sucess: false
                 })
             );
         }

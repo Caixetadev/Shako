@@ -23,13 +23,6 @@ wss.on("connection", ws => {
         console.log(error)
     }
   });
-  //send immediate a feedback to the incoming connection
-  ws.send(
-    JSON.stringify({
-      type: "connect",
-      message: "Well hello there, I am a WebSocket server"
-    })
-  );
 });
 
 //start our server

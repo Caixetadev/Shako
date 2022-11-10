@@ -1,21 +1,16 @@
 import { useState, useEffect } from 'react'
 import './App.css'
+import Login from './pages/auth/login'
 
 const ws = new WebSocket('ws://localhost:9000/ws')
 
 function App() {
-
+  const [user, setUser] = useState({id: null});
   
   useEffect(() => {
       ws.onopen = () => {
         // on connecting, do nothing but log it to the console
         console.log('connected')
-      }
-
-      ws.onmessage = evt => {
-      // listen to data sent from the websocket server
-        const message = JSON.parse(evt.data)
-        console.log(message)
       }
 
       ws.onclose = () => {
@@ -33,27 +28,18 @@ function App() {
     };
   }, []);
 
-  const stringy = (json: object) => {
-    return JSON.stringify(json)
+  const setLogged = (user: Object) => {
+    setUser(user as any)
   }
 
   return (
     <div className="App">
-      <div className="login-container">
-        <div className="login-box">
-          <div className="login-box-content">
-            <h1 className="title">Welcome back!</h1>
-            <h4 className="subtitle">We're so excited to see you again!</h4>
-            <label htmlFor="email">Email</label>
-            <input type="text" id="email" autoComplete="off"/>
-            <label htmlFor="password">Password</label>
-            <input type="password" id="password"/>
-            <p><a className="register" href="#">Forgot your password?</a></p>
-            <button>Login</button>
-            <p>Need an account? <a className="register" href="#">Register</a></p>
-          </div>
-        </div>
-    </div>
+      {!user?.id ? <Login ws={ws} setLogged={setLogged}/> :
+      <>
+        {/* Logged */}
+        <h1>Logged page</h1>
+      </>
+      }
     </div>
   )
 }
