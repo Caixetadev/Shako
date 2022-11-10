@@ -10,23 +10,24 @@ function Login(props: any) {
         props.ws.onmessage = (evt: any) => {
         // listen to data sent from the websocket server
           const message = JSON.parse(evt.data)
-          setError(message.sucess)
-          if(message.user?.id){
-            window.localStorage.setItem('token', message.user.token)
-            props.setLogged(message.user)
+          if(message.type === "login"){
+            setError(message.sucess)
+            if(message.user?.id){
+              window.localStorage.setItem('token', message.user.token)
+              props.setLogged(message.user)
+            }
           }
         }
   
         props.ws.onclose = () => {
-          console.log('disconnected')
-        // automatically try to reconnect on connection loss
+          //Close ws
         }
   
         props.ws.onerror = (err: any) => {
-          console.error(
-              "Socket encountered error: ",
-              "Closing socket"
-          );
+          // console.error(
+          //     "Socket encountered error: ",
+          //     "Closing socket"
+          // );
   
           props.ws.close();
       };
