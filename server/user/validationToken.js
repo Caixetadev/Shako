@@ -1,4 +1,4 @@
-const validationToken = async ({token}, knex, ws) => {
+const validationToken = async ({token}, knex, ws, app) => {
     knex('users').where({
         token: token
       }).select('*').then(function(rows) {

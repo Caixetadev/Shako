@@ -8,6 +8,7 @@ import {
 
 import Login from './pages/auth/login'
 import Register from './pages/auth/register'
+import Dashboard from './app/dashboard';
 
 interface User {
   id: string;
@@ -36,10 +37,6 @@ function App() {
     clearInterval(intervalConnect)
   }, 1000);
 
-  const stringy = (json: object) => {
-    return JSON.stringify(json)
-  }
-
   const setLogged = (user: Object) => {
     setUser(user as any)
   }
@@ -49,22 +46,22 @@ function App() {
       <BrowserRouter>
         <Route path="/" exact render={(props) => <>
           { user?.id ? <>
-            <h1>Logged with { user?.username}#{user?.discrimination}</h1>
+            <Dashboard user={user}/>
           </> : <Login setLogged={setLogged} /> }
         </>} />
         <Route path="/login" exact render={(props) => <>
           { user?.id ? <>
-            <h1>Logged with { user?.username}#{user?.discrimination}</h1>
+            <Dashboard user={user}/>
           </> : <Login setLogged={setLogged} /> }
         </>} />
         <Route path="/app" exact render={(props) => <>
           { user?.id ? <>
-            <h1>Logged with { user?.username}#{user?.discrimination}</h1>
+            <Dashboard user={user}/>
           </> : <Login setLogged={setLogged} /> }
         </>} />
         <Route path="/register" exact render={(props) => <>
           { user?.id ? <>
-            <h1>Logged with { user?.username}#{user?.discrimination}</h1>
+            <Dashboard user={user}/>
           </> : <Register setLogged={setLogged}/> }
         </>} />
       </BrowserRouter>

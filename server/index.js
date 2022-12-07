@@ -18,7 +18,7 @@ wss.on("connection", ws => {
     const msgReceive = msg.toString()
     try {
         const json = JSON.parse(msgReceive)
-        parseMessage(json, ws, knex)  
+        parseMessage(json, ws, knex, app)  
     } catch (error) {
         console.log(error)
     }
