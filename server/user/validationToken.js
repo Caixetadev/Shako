@@ -1,4 +1,4 @@
-const validationToken = async ({token}, knex, ws, app) => {
+const validationToken = async ({token}, knex, ws, app, io) => {
     knex('users').where({
         token: token
       }).select('*').then(function(rows) {
@@ -13,6 +13,7 @@ const validationToken = async ({token}, knex, ws, app) => {
                   message: ""
                 })
             );
+            return rows[0]
         } else{
             ws.send(
                 JSON.stringify({
@@ -23,6 +24,7 @@ const validationToken = async ({token}, knex, ws, app) => {
                   message: ""
                 })
             );
+            return {}
         }
       })
 }

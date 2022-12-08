@@ -16,7 +16,7 @@ const generateToken = (length) => {
     return b.join("");
 }
 
-const userRegister = async ({email, password, username}, knex, ws, app) => {
+const userRegister = async ({email, password, username}, knex, ws, app, io) => {
     if(email && password && username){
         const token = generateToken(199)
         let discrimi = await knex('users')

@@ -1,4 +1,4 @@
-const userLogin = async ({email, password}, knex, ws, app) => {
+const userLogin = async ({email, password}, knex, ws, app, io) => {
     if(email && password){
       knex('users').where({
         email: email,

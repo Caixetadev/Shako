@@ -2,25 +2,59 @@ import { useState, useEffect } from 'react'
 
 import {
   Link
-} from "react-router-dom"
+} from "react-router-dom";
 
-const typePage = 'dashboard'
+const typePage = 'dashboard';
 
-import io, { Socket } from 'socket.io-client';
+declare global {
+  interface Window { MyNamespace: any; }
+}
+
+interface ServerToClientEvents {
+  noArg: () => void;
+  basicEmit: (a: number, b: string, c: Buffer) => void;
+  withAck: (d: string, callback: (e: number) => void) => void;
+}
+
+interface ClientToServerEvents {
+  hello: () => void;
+}
+
+interface InterServerEvents {
+  ping: () => void;
+}
+
+interface SocketData {
+  name: string;
+  age: number;
+}
+
+import { io, Socket } from "socket.io-client";
 const ws = new WebSocket('ws://localhost:9000/ws/app')
 
 function Dashboard({user}: any) {
-    
+    const [loading, setLoading] = useState(false);
+    let socket: Socket<ServerToClientEvents, ClientToServerEvents>;
+       
     useEffect(() => {
-        
-        const data = {type: 'app', data: {}};
-        ws.send(stringy(data))
+        setTimeout(() => {
+          const data = {type: 'app', data: {}};
+          ws.send(stringy(data))
+        }, 1000)
 
-        let socket: Socket;
-        const ENDPOINT = 'localhost:5000/dashboard';
-        
-        socket = io(ENDPOINT);
-        socket.emit('join', { name: 'Paola', room: '1' }, () => {});
+
+        ws.onmessage = (evt: any) => {
+          // listen to data sent from the websocket server
+            const message = JSON.parse(evt.data)
+            if(message.type === typePage){
+              if(message.sucess){
+                socket = io('localhost:9000');
+                setLoading(true);
+                const token = (window as any).localStorage.getItem('token')
+              }
+            }
+          }
+          
     }, [user]);
   
     const stringy = (json: object) => {
