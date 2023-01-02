@@ -1,5 +1,16 @@
-const userLogin = async ({email, password}, knex, ws, app, io) => {
+const crypto = require('crypto');
+
+// Descriptografa a senha
+function encrypt(password) {
+  const cipher = crypto.createCipher('aes256', 'my_little_hex_deca');
+  let encrypted = cipher.update(password, 'utf8', 'hex');
+  encrypted += cipher.final('hex');
+  return encrypted;
+}
+
+const userLogin = async ({email, password}, knex, ws) => {
     if(email && password){
+      password = encrypt(password)
       knex('users').where({
         email: email,
         password:  password

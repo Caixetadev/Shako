@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 
+import ChatContainer from '../components/chat';
+
 import {
   Link
 } from "react-router-dom";
@@ -12,7 +14,7 @@ declare global {
 
 interface ServerToClientEvents {
   noArg: () => void;
-  basicEmit: (a: number, b: string, c: Buffer) => void;
+  basicEmit: (a: any) => void;
   withAck: (d: string, callback: (e: number) => void) => void;
 }
 
@@ -30,40 +32,31 @@ interface SocketData {
 }
 
 import { io, Socket } from "socket.io-client";
-const ws = new WebSocket('ws://localhost:9000/ws/app')
 
 function Dashboard({user}: any) {
     const [loading, setLoading] = useState(false);
-    let socket: Socket<ServerToClientEvents, ClientToServerEvents>;
+    let socket: Socket;
        
     useEffect(() => {
-        setTimeout(() => {
-          const data = {type: 'app', data: {}};
-          ws.send(stringy(data))
-        }, 1000)
+      socket = io('localhost:9090')
+      setTimeout(() => {
+        emited({}, 'connected', socket)
+      }, 1000)
+    }, []);
 
-
-        ws.onmessage = (evt: any) => {
-          // listen to data sent from the websocket server
-            const message = JSON.parse(evt.data)
-            if(message.type === typePage){
-              if(message.sucess){
-                socket = io('localhost:9000');
-                setLoading(true);
-                const token = (window as any).localStorage.getItem('token')
-              }
-            }
-          }
-          
-    }, [user]);
-  
-    const stringy = (json: object) => {
-      return JSON.stringify(json)
+    const emited = (data, type, socket) => {
+      socket.emit('message', {
+        'data': {
+          'type': type,
+          'token': window.localStorage.getItem('token')
+        }
+      })
     }
-  
+    
+
     return (
       <div className="App">
-        <h1>Logged with { user?.username}#{user?.discrimination}</h1>
+        <ChatContainer user={user} socket={socket}/>
       </div>
     )
 }

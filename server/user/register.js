@@ -1,8 +1,20 @@
+const crypto = require('crypto');
+
 const discriminationParse = number => {
     const str = "" + number
     const pad = "0000"
     const ans = pad.substring(0, pad.length - str.length) + str
     return ans
+}
+
+
+
+// Criptografa a senha
+function encrypt(password) {
+  const cipher = crypto.createCipher('aes256', 'my_little_hex_deca');
+  let encrypted = cipher.update(password, 'utf8', 'hex');
+  encrypted += cipher.final('hex');
+  return encrypted;
 }
 
 const generateToken = (length) => {
@@ -16,7 +28,7 @@ const generateToken = (length) => {
     return b.join("");
 }
 
-const userRegister = async ({email, password, username}, knex, ws, app, io) => {
+const userRegister = async ({email, password, username}, knex, ws) => {
     if(email && password && username){
         const token = generateToken(199)
         let discrimi = await knex('users')
@@ -36,7 +48,7 @@ const userRegister = async ({email, password, username}, knex, ws, app, io) => {
                 knex('users').insert(
                 {
                     email: email, 
-                    password: password,
+                    password: encrypt(password),
                     username: username,
                     token: token,
                     admin: '0',

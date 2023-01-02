@@ -5,16 +5,22 @@ const app = express();
 const cors = require('cors')
 const {parseMessage} = require('./webrtc/parse');
 const {knex} = require('./migrations');
+const {dashboard} = require('./app/dashboard')
 const port = process.env.PORT || 9000;
 
 //initialize a http server
 const server = http.createServer(app);
 
+const portWSS = process.env.PORT || 9090;
+
+//initialize a http server
+const serverWSS = http.createServer(app);
+
 //initialize the WebSocket server instance
 const wss = new WebSocket.Server({ server });
 
 const { Server } = require("socket.io");
-const io = require('socket.io')(server, {
+const io = require('socket.io')(serverWSS, {
   cors: {
     origin: '*',
   }
@@ -38,7 +44,16 @@ wss.on("connection", ws => {
 );
 });
 
+io.on('connection', (socket) => {
+  dashboard(socket, knex, io)
+});
+
 //start our server
 server.listen(port, () => {
   console.log(`Signaling Server running on port: ${port}`);
+});
+
+//start our server WSS
+serverWSS.listen(portWSS, () => {
+  console.log(`Signaling Server running on port: ${portWSS}`);
 });

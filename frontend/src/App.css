@@ -27,7 +27,7 @@ body {
 }
 
 .title, label, p {
-  color: #ffffff;
+  color: rgba(255,255,255,0.7);
 }
 
 .subtitle {
@@ -112,4 +112,13 @@ a{
 
 .error input{
   border: 2px solid var(--danger);
+}
+
+.left_chat{
+  position: fixed;
+  right: 0;
+  top: 0;
+  background-color: rgba(0,0,0,0.23);
+  height: 100%;
+  width: 200px;
 }
