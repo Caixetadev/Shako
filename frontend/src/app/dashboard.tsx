@@ -48,6 +48,7 @@ function Dashboard({user}: any) {
       socket.emit('message', {
         'data': {
           'type': type,
+          'receive': data,
           'token': window.localStorage.getItem('token')
         }
       })
