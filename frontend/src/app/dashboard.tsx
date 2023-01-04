@@ -46,6 +46,7 @@ function Dashboard({user}: any) {
     return (
       <div className="App">
         { loading ? <ChatContainer user={user} socket={socket} emited={emited}/> : <div>Loading...</div> }
+        <h1>Your username is {user.username}#{user.discrimination}</h1>
       </div>
     )
 }
