@@ -32,7 +32,7 @@ function Dashboard({user}: any) {
       }, 1000)
     }, []);
 
-    const emited = (data, type, socket) => {
+    const emited = (data: any, type: any, socket: any) => {
       socket.emit('message', {
         'data': {
           'type': type,
