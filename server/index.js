@@ -50,10 +50,10 @@ io.on('connection', (socket) => {
 
 //start our server
 server.listen(port, () => {
-  console.log(`Signaling Server running on port: ${port}`);
+  console.log(`Signaling Server App running on port: ${port}`);
 });
 
 //start our server WSS
 serverWSS.listen(portWSS, () => {
-  console.log(`Signaling Server running on port: ${portWSS}`);
+  console.log(`Signaling Server Dashboard running on port: ${portWSS}`);
 });
