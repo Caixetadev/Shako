@@ -18,11 +18,16 @@ interface User {
   admin: string;
 }
 
+import { Socket } from "socket.io-client";
+import { DefaultEventsMap } from 'socket.io/dist/typed-events';
+
 interface Props {
-  socket: Socket<DefaultEventsMap, DefaultEventsMap>
+  socket: Socket<DefaultEventsMap, DefaultEventsMap>,
+  user: User,
+  emited: (param1: any, param2: string, param3: Socket<DefaultEventsMap, DefaultEventsMap>) => void
 }
 
-import { Socket } from "socket.io-client";
+
 
 function ChatContainer(props:Props) {
   const [user_atual, setUser] = useState<User>(props.user);
