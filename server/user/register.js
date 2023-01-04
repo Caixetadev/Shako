@@ -1,4 +1,5 @@
 const crypto = require('crypto');
+const {userLogin} = require('../user/login');
 
 const discriminationParse = number => {
     const str = "" + number
@@ -6,8 +7,6 @@ const discriminationParse = number => {
     const ans = pad.substring(0, pad.length - str.length) + str
     return ans
 }
-
-
 
 // Criptografa a senha
 function encrypt(password) {
