@@ -1,6 +1,6 @@
 const crypto = require('crypto');
 
-// Descriptografa a senha
+// Criptografa a senha
 function encrypt(password) {
   const cipher = crypto.createCipher('aes256', 'my_little_hex_deca');
   let encrypted = cipher.update(password, 'utf8', 'hex');
