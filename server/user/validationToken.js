@@ -44,10 +44,10 @@ const connected = async ({token}, knex, io, socket, sendToRoom, receive) => {
       token: token
     }).select('*').then(async function(rows) {
       if(rows.length > 0){
-          const otherUsers = await getOtherUsers(knex, rows[0].id)
           rows[0].password = undefined
-          socket.emit('getFriendsChat', await otherUsers)
+          const otherUsers = await getOtherUsersChat({token}, knex, io, socket, sendToRoom, receive)
           await userConnectToRoom(rows[0], `${token}-${rows[0].id}`, socket)
+          await ping({token}, knex, io, socket, sendToRoom)
           return rows[0]
       }
     })
@@ -58,7 +58,7 @@ const getOtherUsersChat = async ({token}, knex, io, socket, sendToRoom, receive)
       token: token
     }).select('*').then(async function(rows) {
       if(rows.length > 0){
-          const otherUsers = await getOtherUsers(knex, rows[0].id)
+          const otherUsers = await getOtherUsers(knex, rows[0], sendToRoom, io, socket)
           socket.emit('getFriendsChat', await otherUsers)
       }
     })
@@ -76,4 +76,20 @@ const validationTokenIO = async ({token}, knex, io, socket, sendToRoom) => {
     })
 }
 
-module.exports = {validationToken, connected, validationTokenIO, getOtherUsersChat}
+const ping = async ({token}, knex, io, socket, sendToRoom) => {
+  var user = {}
+  knex('users').where({
+    token: token
+  }).select('*').then(async function(rows) {
+    if(rows.length > 0){
+        rows[0].password = undefined
+        rows.map((user) => {
+            sendToRoom(`${user.token}-${user.id}`, 'pong', JSON.stringify({'userID': rows[0].id, 'username': rows[0].username, 'message': 'online'}), io, socket)
+            user.password = undefined
+            user.token = undefined
+        })
+    }
+  })
+}
+
+module.exports = {validationToken, connected, validationTokenIO, getOtherUsersChat, ping}

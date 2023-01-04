@@ -1,4 +1,4 @@
-const {connected, getOtherUsersChat} = require('../user/validationToken');
+const {connected, getOtherUsersChat, ping} = require('../user/validationToken');
 
 const dashboard = async (socket, knex, io) => {
     const socket_id = socket.id
@@ -18,13 +18,15 @@ const parseMessage = async (type, data, knex, io, socket, receive) => {
   await types[type](data, knex, io, socket, sendToRoom, receive)
 }
 
-const sendToRoom = async(room, event, data, io) => {
-  io.sockets.in(room).emit(event, data);
+const sendToRoom = async(room, event, data, io, socket) => {
+  io.sockets.in(room).emit(`${event} ${data}`);
+  socket.broadcast.to(room).emit(`${event} ${data}`);
 }
 
 const types = {
   'connected': connected,
-  'getFriends': getOtherUsersChat
+  'getFriends': getOtherUsersChat,
+  'ping': ping
 }
 
 module.exports = {dashboard}

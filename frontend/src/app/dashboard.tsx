@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 
 import ChatContainer from '../components/chat';
+import Online from '../ws/ping';
 
 import {
   Link
@@ -18,7 +19,6 @@ var socket: Socket;
 
 function Dashboard({user}: any) {
     const [loading, setLoading] = useState(false);
-    
     useEffect(() => {
       setTimeout(() => {
         socket = io('localhost:9090')
@@ -45,7 +45,9 @@ function Dashboard({user}: any) {
     return (
       <div className="App">
         { loading ? <ChatContainer user={user} socket={socket} emited={emited}/> : <div>Loading...</div> }
+        { loading ? <Online user={user} socket={socket} emited={emited}/> : ''}
         <h1>Your username is {user.username}#{user.discrimination}</h1>
+        
       </div>
     )
 }
