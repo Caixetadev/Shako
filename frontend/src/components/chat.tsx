@@ -18,12 +18,20 @@ interface User {
   admin: string;
 }
 
-function ChatContainer({user}: {user: User}, {socket}: {socket: Socket}) {
-  const [user_atual, setUser] = useState<User>(user);
+interface Props {
+  socket: Socket<DefaultEventsMap, DefaultEventsMap>
+}
+
+import { Socket } from "socket.io-client";
+
+function ChatContainer(props:Props) {
+  const [user_atual, setUser] = useState<User>(props.user);
   const [users, setUsers] = useState<User[]>([])
 
   useEffect(() => {
-    socket.on('getFriendsChat', (friends: User[]) => {
+    props.emited({}, 'getFriends', props.socket)
+
+    props.socket.on('getFriendsChat', (friends: User[]) => {
       setUsers(friends)
     })
   }, [])

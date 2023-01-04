@@ -5,7 +5,6 @@ async function getOtherUsers(knex, currentUserId) {
             user.password = undefined
             user.token = undefined
             users_.push(user)
-            console.log(users_)
         })
     })
     return users_

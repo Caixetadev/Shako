@@ -12,30 +12,13 @@ declare global {
   interface Window { MyNamespace: any; }
 }
 
-interface ServerToClientEvents {
-  noArg: () => void;
-  basicEmit: (a: any) => void;
-  withAck: (d: string, callback: (e: number) => void) => void;
-}
-
-interface ClientToServerEvents {
-  hello: () => void;
-}
-
-interface InterServerEvents {
-  ping: () => void;
-}
-
-interface SocketData {
-  name: string;
-  age: number;
-}
 
 import { io, Socket } from "socket.io-client";
+var socket: Socket;
 
 function Dashboard({user}: any) {
     const [loading, setLoading] = useState(false);
-    let socket: Socket;
+    
        
     useEffect(() => {
       setTimeout(() => {
@@ -43,6 +26,9 @@ function Dashboard({user}: any) {
         setTimeout(() => {
           emited({}, 'connected', socket)
         }, 1000)
+        socket.on('connected', (message: any) => {
+          setLoading(true)
+        })
       }, 1000)
     }, []);
 
@@ -59,7 +45,7 @@ function Dashboard({user}: any) {
 
     return (
       <div className="App">
-        <ChatContainer user={user} socket={socket}/>
+        { loading ? <ChatContainer user={user} socket={socket} emited={emited}/> : <div>Loading...</div> }
       </div>
     )
 }

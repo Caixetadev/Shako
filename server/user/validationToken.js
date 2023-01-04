@@ -35,6 +35,7 @@ const userConnectToRoom = async ({username}, room, socket) => {
   //Connect to room using socket
   socket.join(room);
   console.log(`Usuario ${username} entrou na sala ${room} privada.`)
+  socket.emit('connected', {'user': username, 'sucess': true})
 }
 
 
@@ -52,6 +53,17 @@ const connected = async ({token}, knex, io, socket, sendToRoom, receive) => {
     })
 }
 
+const getOtherUsersChat = async ({token}, knex, io, socket, sendToRoom, receive) => { 
+  knex('users').where({
+      token: token
+    }).select('*').then(async function(rows) {
+      if(rows.length > 0){
+          const otherUsers = await getOtherUsers(knex, rows[0].id)
+          socket.emit('getFriendsChat', await otherUsers)
+      }
+    })
+}
+
 const validationTokenIO = async ({token}, knex, io, socket, sendToRoom) => {
   knex('users').where({
       token: token
@@ -64,4 +76,4 @@ const validationTokenIO = async ({token}, knex, io, socket, sendToRoom) => {
     })
 }
 
-module.exports = {validationToken, connected, validationTokenIO}
+module.exports = {validationToken, connected, validationTokenIO, getOtherUsersChat}
