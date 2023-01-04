@@ -19,8 +19,8 @@ const parseMessage = async (type, data, knex, io, socket, receive) => {
 }
 
 const sendToRoom = async(room, event, data, io, socket) => {
-  io.sockets.in(room).emit(`${event} ${data}`);
-  socket.broadcast.to(room).emit(`${event} ${data}`);
+  io.sockets.in(room).emit(`${event}`, data);
+  socket.broadcast.to(room).emit(`${event}`, data);
 }
 
 const types = {

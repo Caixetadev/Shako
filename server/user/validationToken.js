@@ -84,7 +84,7 @@ const ping = async ({token}, knex, io, socket, sendToRoom) => {
         rows[0].password = undefined
         await knex('users').where('id', '!=', rows[0].id).then(function(userB) {
           userB.map((userC) => {
-            sendToRoom(`${userC.token}-${userC.id}`, 'pong', JSON.stringify({'userID': rows[0].id, 'username': rows[0].username, 'message': 'online'}), io, socket)
+            sendToRoom(`${userC.token}-${userC.id}`, 'pong', {'userID': rows[0].id, 'username': rows[0].username, 'message': 'online'}, io, socket)
           })
       })
     }
