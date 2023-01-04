@@ -77,17 +77,16 @@ const validationTokenIO = async ({token}, knex, io, socket, sendToRoom) => {
 }
 
 const ping = async ({token}, knex, io, socket, sendToRoom) => {
-  var user = {}
   knex('users').where({
     token: token
   }).select('*').then(async function(rows) {
     if(rows.length > 0){
         rows[0].password = undefined
-        rows.map((user) => {
-            sendToRoom(`${user.token}-${user.id}`, 'pong', JSON.stringify({'userID': rows[0].id, 'username': rows[0].username, 'message': 'online'}), io, socket)
-            user.password = undefined
-            user.token = undefined
-        })
+        await knex('users').where('id', '!=', rows[0].id).then(function(userB) {
+          userB.map((userC) => {
+            sendToRoom(`${userC.token}-${userC.id}`, 'pong', JSON.stringify({'userID': rows[0].id, 'username': rows[0].username, 'message': 'online'}), io, socket)
+          })
+      })
     }
   })
 }
