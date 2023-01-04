@@ -38,9 +38,11 @@ function Dashboard({user}: any) {
     let socket: Socket;
        
     useEffect(() => {
-      socket = io('localhost:9090')
       setTimeout(() => {
-        emited({}, 'connected', socket)
+        socket = io('localhost:9090')
+        setTimeout(() => {
+          emited({}, 'connected', socket)
+        }, 1000)
       }, 1000)
     }, []);
 
