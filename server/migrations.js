@@ -34,7 +34,6 @@ const up = function (knex) {
       table.string("status").notNullable();
       // define as colunas de sender_id e receiver_id como chaves estrangeiras que se referem à tabela de usuários
       table.string("sender_id").notNullable();
-      table.string("status").notNullable();
     }),
   ]);
 };
