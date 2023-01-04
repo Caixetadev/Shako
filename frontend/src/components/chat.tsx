@@ -24,9 +24,8 @@ import { DefaultEventsMap } from 'socket.io/dist/typed-events';
 interface Props {
   socket: Socket<DefaultEventsMap, DefaultEventsMap>,
   user: User,
-  emited: (param1: any, param2: string, param3: Socket<DefaultEventsMap, DefaultEventsMap>) => void
+  emited: (data: any, type: string, socket: Socket<DefaultEventsMap, DefaultEventsMap>) => void
 }
-
 
 
 function ChatContainer(props:Props) {
