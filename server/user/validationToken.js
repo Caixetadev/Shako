@@ -31,7 +31,7 @@ const validationToken = async ({token}, knex, ws) => {
       })
 }
 
-const connected = async ({token}, knex, io, socket, sendToRoom) => { 
+const connected = async ({token}, knex, io, socket, sendToRoom, receive) => { 
   knex('users').where({
       token: token
     }).select('*').then(async function(rows) {

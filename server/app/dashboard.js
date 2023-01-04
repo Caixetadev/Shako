@@ -5,16 +5,17 @@ const dashboard = async (socket, knex, io) => {
     socket.on('message', async msg => {
       try {
         const data = msg.data
+        const receive = msg.data.receive
         const type = data.type
-        await parseMessage(type, data, knex, io, socket)
+        await parseMessage(type, data, knex, io, socket, receive)
       } catch (error) {
         
       }
     });
 }
 
-const parseMessage = async (type, data, knex, io, socket) => {
-  await types[type](data, knex, io, socket, sendToRoom)
+const parseMessage = async (type, data, knex, io, socket, receive) => {
+  await types[type](data, knex, io, socket, sendToRoom, receive)
 }
 
 const sendToRoom = async(room, event, data, io) => {
