@@ -19,7 +19,6 @@ var socket: Socket;
 function Dashboard({user}: any) {
     const [loading, setLoading] = useState(false);
     
-       
     useEffect(() => {
       setTimeout(() => {
         socket = io('localhost:9090')

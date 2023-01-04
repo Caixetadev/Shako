@@ -42,7 +42,9 @@ function ChatContainer(props:Props) {
         <ul>
           { users?.map((user) => (
             <li>
-              { user?.username }
+              { user?.username }<span style={{
+                display: 'none'
+              }}>#{user?.discrimination}</span>
             </li>
           )) }
         </ul>
